@@ -1,0 +1,10 @@
+<% jobs.forEach(job => { %>
+    <div>
+        <h2><%= job.jobtitle %></h2>
+        <p><%= job.companyname %></p>
+        <p><%= job.mode %></p>
+        <p><%= job.location %></p>
+        <p><%= job.salary.min %> - <%= job.salary.max %></p>
+        <p><%= job.description %></p>
+    </div>
+<% }) %>

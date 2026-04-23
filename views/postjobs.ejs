@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="w-full h-screen text-white flex items-center justify-center relative overflow-hidden">
+
+
+
+    <div class="flex items-center bg-zinc-900 text-black">
+      <form action="/post-job" method="post">
+    <input type="text" name="jobtitle" placeholder="Job Title" required>
+    <input type="text" name="companyname" placeholder="Company Name" required>
+    <select name="mode">
+        <option value="Onsite">Onsite</option>
+        <option value="Hybrid">Hybrid</option>
+        <option value="Remote">Remote</option>
+    </select>
+    <input type="text" name="location" placeholder="Location" required>
+    <input type="number" name="salary_min" placeholder="Min Salary" required>
+    <input type="number" name="salary_max" placeholder="Max Salary" required>
+    <textarea name="description" placeholder="Job Description" required></textarea>
+    <button type="submit">Post Job</button>
+</form>
+    </div>
+</body>
+</html>
