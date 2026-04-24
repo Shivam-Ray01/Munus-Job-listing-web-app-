@@ -38,6 +38,7 @@ app.get('/profile', isLoggedIn,  (req,res)=>{
 app.get('/postjobs' ,isLoggedIn, isRecruiter, (req, res)=>{
     res.render('postjobs');
 });
+
 app.get('/jobs', isLoggedIn, async (req , res)=>{
     let jobs = await post.find();
     res.render('jobs', {jobs});
@@ -97,7 +98,7 @@ app.post('/login' , async (req , res)=> {
 });
 
 app.post('/postjobs', isLoggedIn , isRecruiter, async (req, res)=>{
-     let {jobtitle, companyname, location, salary, description} = req.body;
+     let {jobtitle, companyname, location,  salary_min, salary_max, description} = req.body;
       await post.create( {
         jobtitle, 
         companyname, 
@@ -110,6 +111,12 @@ app.post('/postjobs', isLoggedIn , isRecruiter, async (req, res)=>{
         postedBy: req.user.userid
      });
      res.redirect('/dashboard');
+});
+
+app.post('/delete', isLoggedIn, isRecruiter, async (req , res) => {
+   let {postid} = req.body;
+    await post.findByIdAndDelete(postid);
+        res.redirect('/dashboard');
 });
 
 
