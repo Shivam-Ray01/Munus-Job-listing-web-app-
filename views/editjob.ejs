@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Job</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-10">
+
+    <div class="w-full max-w-lg bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-2xl">
+        <h2 class="text-2xl font-bold mb-6 text-center">Edit Job</h2>
+
+        <form action="/edit-job/<%= job._id %>" method="post" class="flex flex-col gap-3">
+
+            <input type="text" name="jobtitle" value="<%= job.jobtitle %>" required
+                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+
+            <input type="text" name="companyname" value="<%= job.companyname %>" required
+                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+
+            <select name="mode" class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+                <option value="Onsite" <%= job.mode === 'Onsite' ? 'selected' : '' %>>Onsite</option>
+                <option value="Hybrid" <%= job.mode === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                <option value="Remote" <%= job.mode === 'Remote' ? 'selected' : '' %>>Remote</option>
+            </select>
+
+            <input type="text" name="location" value="<%= job.location %>" required
+                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+
+            <div class="flex gap-3">
+                <input type="number" name="salary_min" value="<%= job.salary.min %>" required
+                    class="w-1/2 px-4 py-2 rounded-lg bg-gray-700 outline-none">
+                <input type="number" name="salary_max" value="<%= job.salary.max %>" required
+                    class="w-1/2 px-4 py-2 rounded-lg bg-gray-700 outline-none">
+            </div>
+
+            <textarea name="description" rows="4" required
+                class="px-4 py-2 rounded-lg bg-gray-700 outline-none resize-none"><%= job.description %></textarea>
+
+            <button type="submit"
+                class="w-full py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold transition duration-200">
+                Update Job
+            </button>
+
+        </form>
+    </div>
+
+</body>
+</html>

@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const { isLoggedIn, isRecruiter, isAdmin } = require('./middleware/authmiddleware');
 const users = require('./models/user');
 const post = require('./models/jobpost');
+const application = require('./models/application');
 const path = require('path');
 const cookieparser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
@@ -49,6 +50,19 @@ app.get('/dashboard', isLoggedIn, isRecruiter,  async (req, res)=>{
     res.render('dashboard', {jobs});
 });
 
+app.get('/editjob/:id', isLoggedIn, isRecruiter, async (req, res) => {
+    let job = await post.findById(req.params.id);
+      if (!job){
+        return res.status(403).send('job not found')
+      };
+    
+    if (job.postedBy.toString() !== req.user.userid.toString()) {
+        return res.status(403).send('Access Denied');
+    }
+
+    res.render('editjob', { job });
+});
+
 app.post('/register', async (req, res)=>{
     let {username, email, password, role} = req.body;
      if (role ==='admin'){
@@ -82,7 +96,7 @@ app.post('/login' , async (req , res)=> {
            
          bcrypt.compare(password, user.password, (err , result)=>{
             if (result){
-        let token = jwt.sign({email: user.email, user:user._id , role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'});
+        let token = jwt.sign({email: user.email, userid:user._id , role: user.role}, process.env.JWT_SECRET, {expiresIn: '1d'});
         res.cookie('token', token);
            if (user.role === 'recruiter'){
             res.redirect('/dashboard')
@@ -98,7 +112,7 @@ app.post('/login' , async (req , res)=> {
 });
 
 app.post('/postjobs', isLoggedIn , isRecruiter, async (req, res)=>{
-     let {jobtitle, companyname, location,  salary_min, salary_max, description} = req.body;
+     let {jobtitle, companyname, mode, location,  salary_min, salary_max, description} = req.body;
       await post.create( {
         jobtitle, 
         companyname, 
@@ -113,12 +127,46 @@ app.post('/postjobs', isLoggedIn , isRecruiter, async (req, res)=>{
      res.redirect('/dashboard');
 });
 
-app.post('/delete', isLoggedIn, isRecruiter, async (req , res) => {
-   let {postid} = req.body;
+app.post('/delete', isLoggedIn, isRecruiter, async (req, res) => {
+   let { postid } = req.body;
+    
+    let job = await post.findById(postid);
+    
+    if (!job) {
+        return res.status(404).send('Job not found');
+    }
+
+    if (job.postedBy.toString() !== req.user.userid.toString()) {
+        return res.status(403).send('Access Denied');
+    }
+    
     await post.findByIdAndDelete(postid);
-        res.redirect('/dashboard');
+    res.redirect('/dashboard');
 });
 
+app.post('/editjob/:id', isLoggedIn, isRecruiter, async (req, res) => {
+    let { jobtitle, companyname, mode, location, salary_min, salary_max, description } = req.body;
+
+    let job = await post.findById(req.params.id);
+
+    if (job.postedBy.toString() !== req.user.userid.toString()) {
+        return res.status(403).send('Access Denied');
+    }
+
+    await post.findByIdAndUpdate(req.params.id, {
+        jobtitle,
+        companyname,
+        mode,
+        location,
+        salary: {
+            min: salary_min,
+            max: salary_max
+        },
+        description
+    });
+
+    res.redirect('/dashboard');
+});
 
 app.listen(3000);
 
