@@ -11,6 +11,7 @@ const application = require('./models/application');
 const path = require('path');
 const cookieparser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const upload = require('./config/multer');
 
 
 app.set('view engine','ejs');
@@ -61,6 +62,17 @@ app.get('/editjob/:id', isLoggedIn, isRecruiter, async (req, res) => {
     }
 
     res.render('editjob', { job });
+});
+
+app.get('/apply/:id', isLoggedIn, async (req, res)=>{
+        let job = await post.findById(req.params.id);
+        res.render('apply', { job });
+});
+
+app.get('/resume/:filename', isLoggedIn, isRecruiter, (req, res) => {
+    let filename = req.params.filename;
+    let filepath = path.join(__dirname, 'uploads/resumes', filename);
+    res.sendFile(filepath);
 });
 
 app.post('/register', async (req, res)=>{
@@ -166,6 +178,30 @@ app.post('/editjob/:id', isLoggedIn, isRecruiter, async (req, res) => {
     });
 
     res.redirect('/dashboard');
+});
+
+app.post('/apply/:id', isLoggedIn , upload.single('resume'), async (req , res)=>{
+      let jobid = req.params.id;
+      let applicantid = req.user.userid;
+      let {name, email, availability } = req.body;
+      let resume = req.file.filename ;
+      let alreadyapplied = await application.findOne({
+        job : jobid,
+        applicant : applicantid
+      });
+
+      if (alreadyapplied){
+        return res.send('Already applied to this job');
+      }
+     await application.create({
+        job : jobid,
+        applicant : applicantid,
+        name : name,
+        email: email,
+        availability : availability,
+        resume
+    });
+    res.redirect('/jobs');
 });
 
 app.listen(3000);

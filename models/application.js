@@ -16,7 +16,18 @@ const application = mongoose.Schema({
         type: String,
         enum: ['pending', 'accepted', 'rejected'],
         default:'pending',
-    }
+    },
+        name : String,
+        email : String,
+        availability:{
+            type : String,
+            enum: ['yes', 'no'],
+            default : 'yes'
+        },
+
+        resume : String,
+
+
 }, {timestamps:true});
 
 module.exports = mongoose.model('application', application);

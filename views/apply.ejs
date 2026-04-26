@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2><%= job.jobtitle %></h2>
+    <p><%= job.companyname %></p>   
+    <div>
+        <form action="/apply/<%= job._id %>" method="post" enctype="multipart/form-data">
+            <input type="text" name="name" class="px-4 py-2 rounded-lg bg-gray-700 outline-none placeholder-gray-400">
+            <input type="text" name="email" class="px-4 py-2 rounded-lg bg-gray-700 outline-none placeholder-gray-400">
+            <input type="file" name="resume" accept=".pdf">
+             <select name="availability" class="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 outline-none">
+              <option value="yes">Yes - Can join immediately</option>
+                <option value="no">No - Need time</option>
+            </select>
+
+             <button type="submit"
+                class="w-full py-2 bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold transition duration-200">
+                submit Application
+            </button>
+            
+        </form>
+    </div>
+</body>
+</html>
