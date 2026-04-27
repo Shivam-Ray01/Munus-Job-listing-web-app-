@@ -33,10 +33,6 @@ app.get('/register', (req , res)=>{
     res.render('register');
 });
 
-app.get('/profile', isLoggedIn,  (req,res)=>{
-   res.render('profile')
-});
-
 app.get('/postjobs' ,isLoggedIn, isRecruiter, (req, res)=>{
     res.render('postjobs');
 });
@@ -69,10 +65,38 @@ app.get('/apply/:id', isLoggedIn, async (req, res)=>{
         res.render('apply', { job });
 });
 
-app.get('/resume/:filename', isLoggedIn, isRecruiter, (req, res) => {
+app.get('/profile', isLoggedIn , async (req, res)=>{
+    let loggedInUsers = await users.findById(req.user.userid);
+    if (req.user.role === 'recruiter'){
+      let jobs = await post.find({postedBy: req.user.userid})
+         res.render('profile', {loggedInUsers, jobs});
+    } else {
+        let person = await application.find({applicant: req.user.userid}).populate('job')
+         res.render('profile', {loggedInUsers , person});
+    }
+});
+
+app.get('/application/:jobid' , isLoggedIn, isRecruiter , async (req, res)=>{
+           let job = await post.findById(req.params.jobid);
+           if (job.postedBy.toString() !== req.user.userid.toString()){
+               return res.send('Access Denied');
+             };
+             let forms = await application.find({job : req.params.jobid}).populate('applicant');
+            res.render('application', {forms , job});       
+});
+
+app.get('/resume/:filename', isLoggedIn, isRecruiter, async (req, res) => {
     let filename = req.params.filename;
-    let filepath = path.join(__dirname, 'uploads/resumes', filename);
-    res.sendFile(filepath);
+   let sheet = await application.findOne({resume: filename});
+   if (!sheet) return res.status(404).send('Application not found');
+    let job = await post.findById(sheet.job);
+      if (!job) return res.status(404).send('Job not found');
+    if (job.postedBy.toString() === req.user.userid.toString()){
+        let filepath = path.join(__dirname, 'uploads/resumes', filename);
+        res.sendFile(filepath); 
+          }else {
+        res.send('Access Denied');
+    }
 });
 
 app.post('/register', async (req, res)=>{
@@ -202,6 +226,22 @@ app.post('/apply/:id', isLoggedIn , upload.single('resume'), async (req , res)=>
         resume
     });
     res.redirect('/jobs');
+});
+
+app.post('/application/accept/:id' , isLoggedIn , isRecruiter,async (req, res)=>{
+    let applydata = await application.findById(req.params.id);
+    let status = await application.findByIdAndUpdate(req.params.id, {
+        status : 'accepted'
+    });
+    res.redirect('/dashboard');       
+});
+
+app.post('/application/reject/:id' , isLoggedIn , isRecruiter,async (req, res)=>{
+    let applydata = await application.findById(req.params.id);
+    let status = await application.findByIdAndUpdate(req.params.id, {
+        status : 'rejected'
+    });
+    res.redirect('/dashboard');    
 });
 
 app.listen(3000);
