@@ -99,6 +99,11 @@ app.get('/resume/:filename', isLoggedIn, isRecruiter, async (req, res) => {
     }
 });
 
+app.get('/logout' , isLoggedIn,  (req, res)=>{
+         res.clearCookie('token');
+         res.redirect('/');
+})
+
 app.post('/register', async (req, res)=>{
     let {username, email, password, role} = req.body;
      if (role ==='admin'){

@@ -15,6 +15,12 @@
         <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm mt-2 inline-block">
             <%= loggedInUsers.role %>
         </span>
+       <% if (loggedInUsers.role === 'recruiter') { %>  
+             <a href="/dashboard" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600"> Back</a>
+         <% }  else { %>
+        <a href="/jobs" class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600"> Back</a>
+         <% } %>
+        <a href="/logout" class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg">Logout</a>
     </div>
 
     <% if (loggedInUsers.role === 'recruiter') { %>
