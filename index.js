@@ -12,7 +12,10 @@ const path = require('path');
 const cookieparser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const upload = require('./config/multer');
-
+const transporter = require('./config/nodemailer');
+const otpModel = require('./models/OTP');
+const user = require('./models/user');
+const { hash } = require('crypto');
 
 app.set('view engine','ejs');
 app.use(express.json());
@@ -102,10 +105,15 @@ app.get('/resume/:filename', isLoggedIn, isRecruiter, async (req, res) => {
 app.get('/logout' , isLoggedIn,  (req, res)=>{
          res.clearCookie('token');
          res.redirect('/');
-})
+});
+
+app.get('/verifyotp' , (req, res)=>{
+    let email = req.query.email;
+      res.render('otpverification', {email});
+});
 
 app.post('/register', async (req, res)=>{
-    let {username, email, password, role} = req.body;
+    let {username, name ,email, password, role} = req.body;
      if (role ==='admin'){
             return res.status(400).send("Don't be smart you cannot self asssign for admin role");
        }
@@ -116,16 +124,24 @@ app.post('/register', async (req, res)=>{
          if (err){
             return res.send('something went wrong');
        }
-        let user = await users.create ({
-            username,
-            email,
-            password: hash,
-            role,
-        });
-       let token =  jwt.sign({email:email , userid: user._id, role:user.role}, process.env.JWT_SECRET, {expiresIn: '1d'});
-            res.cookie('token', token);
-            res.render('login');
-            });
+         let otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+          
+         await otpModel.create ({
+               email,
+               username,
+               name,
+               password: hash,
+               role,
+               code: otpCode
+         });
+         await transporter.sendMail({
+         from: process.env.EMAIL,
+         to: email,
+         subject: 'Your OTP for Job Portal',
+         text: `Your OTP is: ${otpCode}. Valid for 5 minutes.`
+     });
+           res.redirect('/verifyotp?email=' + email);
+   });
 });
 
 app.post('/login' , async (req , res)=> {
@@ -248,6 +264,38 @@ app.post('/application/reject/:id' , isLoggedIn , isRecruiter,async (req, res)=>
     });
     res.redirect('/dashboard');    
 });
+
+app.post('/verifyotp', async (req, res)=>{
+    let {email, code } = req.body;
+    let otpdoc = await otpModel.findOne({email});
+    if (!otpdoc){
+        return res.send('Email not found');
+    } 
+    if (otpdoc.code !== code){
+        return res.send('Incorrect OTP, please try again');
+    }
+       let newUser = await users.create({
+        username: otpdoc.username,
+        email: otpdoc.email,
+        password: otpdoc.password,
+        role: otpdoc.role
+    });
+   
+await otpModel.findOneAndDelete({email});   
+
+      let token = jwt.sign(
+      { email: newUser.email, userid: newUser._id, role: newUser.role },
+      process.env.JWT_SECRET,
+     { expiresIn: '1d' }
+  );
+  res.cookie('token', token);
+    if (newUser.role === 'recruiter'){
+        res.redirect('/dashboard')
+    } else {
+        res.redirect('/jobs');
+    }
+});
+
 
 app.listen(3000);
 
