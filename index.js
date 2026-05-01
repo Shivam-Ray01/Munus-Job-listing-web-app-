@@ -14,8 +14,6 @@ const jwt = require('jsonwebtoken');
 const upload = require('./config/multer');
 const transporter = require('./config/nodemailer');
 const otpModel = require('./models/OTP');
-const user = require('./models/user');
-const { hash } = require('crypto');
 
 app.set('view engine','ejs');
 app.use(express.json());
@@ -110,6 +108,13 @@ app.get('/logout' , isLoggedIn,  (req, res)=>{
 app.get('/verifyotp' , (req, res)=>{
     let email = req.query.email;
       res.render('otpverification', {email});
+});
+
+app.get('/admin', isLoggedIn, isAdmin, async (req, res) => {
+    let allUsers = await users.find();
+    let allPosts = await post.find();
+    let allApplications = await application.find();
+    res.render('admin', { allUsers, allPosts, allApplications });
 });
 
 app.post('/register', async (req, res)=>{
@@ -296,6 +301,16 @@ await otpModel.findOneAndDelete({email});
     }
 });
 
+app.post('/admin/delete-user/:id', isLoggedIn, isAdmin, async (req, res) => {
+        await user.findByIdAndDelete(req.params.id);
+      res.redirect('/admin');
+});
+
+app.post('/admin/delete-post/:id', isLoggedIn, isAdmin, async(req , res)=>{
+       await post.findByIdAndDelete(req.params.id);
+        res.redirect('/admin');
+
+});
 
 app.listen(3000);
 

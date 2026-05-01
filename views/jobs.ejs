@@ -3,55 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jobs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Available Jobs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <link rel="stylesheet" href="/style/jobspage.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-10">
+<body>
 
-    <div class="flex justify-between items-center mb-10">
-        <h1 class="text-3xl font-bold">Available Jobs</h1>
-        <a href="/profile"
-           class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">
-            My Profile
-        </a>
-    </div>
-
-    <% if (jobs.length === 0) { %>
-        <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400 border border-gray-700">
-            <p>No jobs posted yet. Check back later!</p>
+    <!-- Navbar -->
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <a href="/profile" class="nav-btn btn-ghost">
+                <i class="fas fa-user" style="margin-right: 6px; font-size: 12px;"></i> My Profile
+            </a>
+            <a href="/logout" class="nav-btn btn-danger">
+                <i class="fas fa-sign-out-alt" style="margin-right: 6px; font-size: 12px;"></i> Logout
+            </a>
         </div>
-    <% } else { %>
-        <div class="grid grid-cols-1 gap-4">
-            <% jobs.forEach(job => { %>
-                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-200">
-                    
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-bold"><%= job.jobtitle %></h3>
-                            <p class="text-gray-400"><%= job.companyname %></p>
-                </div>
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm">
-                  <%= job.mode %>
-         </span>
-                    </div>
+    </nav>
 
-                    <div class="mt-3 flex gap-4 text-sm text-gray-400">
-                        <p>📍 <%= job.location %></p>
-                        <p>💰 ₹<%= job.salary.min %> - ₹<%= job.salary.max %></p>
-                    </div>
+    <!-- Main -->
+    <main>
+        <div class="page-header">
+            <div class="page-tag">Discover</div>
+            <h1 class="page-title">Available <span>Opportunities</span></h1>
+            <p class="page-sub"><%= jobs.length %> job<%= jobs.length !== 1 ? 's' : '' %> currently listed</p>
+        </div>
 
-            <p class="mt-3 text-gray-300 text-sm"><%= job.description %></p>
-                
-                    <div class="mt-4">
-               <a href="/apply/<%= job._id %>" 
-                  class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm font-semibold transition duration-200">
-                 Apply Now
-                              </a>
-       </div>
-  </div>
-   <% }) %>
-          </div>
-    <% } %>
+        <% if (jobs.length === 0) { %>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-briefcase"></i></div>
+                <p>No jobs posted yet. Check back soon!</p>
+            </div>
+        <% } else { %>
+            <div class="jobs-grid">
+                <% jobs.forEach(job => { %>
+                    <div class="job-card">
+                        <div class="job-top">
+                            <div>
+                                <h3 class="job-title"><%= job.jobtitle %></h3>
+                                <p class="job-company"><%= job.companyname %></p>
+                            </div>
+                            <span class="mode-badge
+                                <%= job.mode === 'Remote' ? 'mode-remote' :
+                                    job.mode === 'Hybrid' ? 'mode-hybrid' :
+                                    'mode-onsite' %>">
+                                <%= job.mode %>
+                            </span>
+                        </div>
+
+                        <div class="job-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <%= job.location %>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-rupee-sign"></i>
+                                <%= job.salary.min.toLocaleString() %> – <%= job.salary.max.toLocaleString() %> / yr
+                            </div>
+                        </div>
+
+                        <p class="job-desc"><%= job.description %></p>
+
+                        <div class="job-footer">
+                            <span class="posted-time">
+                                <i class="fas fa-clock" style="margin-right: 4px;"></i>
+                                Posted <%= new Date(job.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                            </span>
+                            <a href="/apply/<%= job._id %>" class="apply-btn">
+                                Apply Now <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
 
 </body>
 </html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munus — Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-10">
+
+   <!-- Header -->
+    <div class="flex justify-between items-center mb-10">
+        <div>
+            <h1 class="text-3xl font-bold">Admin Panel</h1>
+            <p class="text-gray-400 text-sm mt-1">Full control over Munus platform</p>
+        </div>
+        <a href="/logout"
+           class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/40 transition duration-200">
+            Logout
+        </a>
+    </div>
+
+    <!-- status starts here  -->
+    <div class="grid grid-cols-3 gap-4 mb-10">
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
+            <p class="text-3xl font-bold text-blue-400"><%= allUsers.length %></p>
+            <p class="text-gray-400 text-sm mt-1">Total Users</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
+            <p class="text-3xl font-bold text-purple-400"><%= allPosts.length %></p>
+            <p class="text-gray-400 text-sm mt-1">Total Job Posts</p>
+        </div>
+        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
+            <p class="text-3xl font-bold text-green-400"><%= allApplications.length %></p>
+            <p class="text-gray-400 text-sm mt-1">Total Applications</p>
+        </div>
+    </div>
+
+    <!-- user section starts here  -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold mb-4 text-blue-400">All Users</h2>
+        <% if (allUsers.length === 0) { %>
+            <p class="text-gray-400">No users found.</p>
+        <% } else { %>
+            <div class="grid grid-cols-1 gap-3">
+                <% allUsers.forEach(u => { %>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold"><%= u.username %></p>
+                            <p class="text-gray-400 text-sm"><%= u.email %></p>
+                            <span class="text-xs px-2 py-0.5 rounded-full mt-1 inline-block
+                                <%= u.role === 'recruiter' ? 'bg-purple-500/20 text-purple-400' :
+                                    u.role === 'admin' ? 'bg-red-500/20 text-red-400' :
+                                    'bg-blue-500/20 text-blue-400' %>">
+                                <%= u.role %>
+                            </span>
+                        </div>
+                        <form action="/admin/delete-user/<%= u._id %>" method="post">
+                            <button type="submit"
+                                class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40 transition duration-200">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- post section starts here  -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold mb-4 text-purple-400">All Job Posts</h2>
+        <% if (allPosts.length === 0) { %>
+            <p class="text-gray-400">No job posts found.</p>
+        <% } else { %>
+            <div class="grid grid-cols-1 gap-3">
+                <% allPosts.forEach(p => { %>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold"><%= p.jobtitle %></p>
+                            <p class="text-gray-400 text-sm"><%= p.companyname %></p>
+                            <div class="flex gap-3 mt-1 text-xs text-gray-500">
+                                <span><%= p.mode %></span>
+                                <span>📍 <%= p.location %></span>
+                                <span>💰 ₹<%= p.salary.min %> - ₹<%= p.salary.max %></span>
+                            </div>
+                        </div>
+                        <form action="/admin/delete-post/<%= p._id %>" method="post">
+                            <button type="submit"
+                                class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40 transition duration-200">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+    <!--  Applications section  -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold mb-4 text-green-400">All Applications</h2>
+        <% if (allApplications.length === 0) { %>
+            <p class="text-gray-400">No applications found.</p>
+        <% } else { %>
+            <div class="grid grid-cols-1 gap-3">
+                <% allApplications.forEach(app => { %>
+                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-semibold"><%= app.name %></p>
+                                <p class="text-gray-400 text-sm"><%= app.email %></p>
+                                <p class="text-gray-500 text-xs mt-1">
+                                    Available immediately: <%= app.availability %>
+                                </p>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded-full
+                                <%= app.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
+                                    app.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
+                                    'bg-red-500/20 text-red-400' %>">
+                                <%= app.status %>
+                            </span>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+</body>
+</html>

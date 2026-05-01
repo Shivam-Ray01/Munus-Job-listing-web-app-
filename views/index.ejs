@@ -3,31 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Opportunities That Actually Fit.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/landingpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="w-full h-screen text-white flex items-center justify-center relative overflow-hidden">
-<video class="absolute top-0 left-0 w-full h-full object-cover -z-10"
-       src="/stockbg.mp4"
-          autoplay 
-        loop 
-        muted 
-        playsinline>
-</video>
- <div class="absolute inset-0 bg-black/40 -z-10"></div>
+<body>
 
-<div>
-     <h1>welcome to the home page </h1>
+<!-- Background slideshow -->
+<div class="bg-slideshow">
+    <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80')"></div>
+    <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&q=80')"></div>
+    <div class="bg-overlay"></div>
+</div>
+
+<!-- Page content -->
+<div class="page-wrap">
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <a href="/" class="nav-logo">Munus</a>
+        <ul class="nav-links">
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="/login" class="btn-ghost">Log in</a>
+            <a href="/register" class="btn-primary">Get started</a>
         </div>
- <a href="/logout" 
-   class="bg-red-500 text-red-100 px-4 py-2 rounded-lg ml-2 hover:bg-red-800/40 transition duration-200">
-   Logout
-</a>
- <a href="/register" 
-   class="bg-blue-500 text-red-100 px-4 py-2 rounded-lg ml-2 hover:bg-red-800/40 transition duration-200">
-   Register
-</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">Now hiring across 50+ categories</div>
+        <h1>
+            <span class="grad">Opportunities</span><br>
+            That Actually Fit.
+        </h1>
+        <p class="hero-sub">
+            Munus connects ambitious professionals with companies that match their skills, values, and ambitions — not just their keywords.
+        </p>
+        <div class="hero-cta">
+            <a href="/register" class="btn-hero-primary">Find your fit →</a>
+            <a href="/register" class="btn-hero-ghost">I'm a recruiter</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num">500+</div>
+                <div class="stat-label">Active Jobs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">200+</div>
+                <div class="stat-label">Companies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">1k+</div>
+                <div class="stat-label">Hired</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how">
+        <div class="reveal">
+            <span class="section-tag">Process</span>
+            <h2 class="section-title">Three steps to your next chapter</h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card reveal">
+                <div class="step-num">01</div>
+                <div class="step-title">Create your profile</div>
+                <p class="step-desc">Sign up in seconds. Tell us about your skills, experience, and what you're looking for.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-num">02</div>
+                <div class="step-title">Discover matched roles</div>
+                <p class="step-desc">Browse curated job listings posted by verified recruiters across industries.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-num">03</div>
+                <div class="step-title">Apply in one click</div>
+                <p class="step-desc">Submit your resume and details instantly. Track your application status in real time.</p>
+            </div>
+            <div class="step-card reveal">
+                <div class="step-num">04</div>
+                <div class="step-title">Connect with HR</div>
+                <p class="step-desc">Get noticed. Recruiters review your profile and reach out when you're a great fit.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="reveal">
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Built for the way you actually job hunt</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Easy Apply</div>
+                <p class="feature-desc">Apply to multiple roles with a single profile. Upload your resume once, use it everywhere on Munus.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">Your Fit, Your Company</div>
+                <p class="feature-desc">Stop scrolling irrelevant listings. Munus surfaces roles that match your actual skills and career goals.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Secure & Private</div>
+                <p class="feature-desc">Your resume and data are protected. Only verified recruiters of roles you applied to can access your documents.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Track Applications</div>
+                <p class="feature-desc">Know where you stand — pending, accepted, or rejected — all from your personal dashboard.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">✉️</div>
+                <div class="feature-title">Verified Accounts</div>
+                <p class="feature-desc">Email OTP verification ensures every user on Munus is real — no bots, no fake listings.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🤝</div>
+                <div class="feature-title">Direct Recruiter Access</div>
+                <p class="feature-desc">Recruiters can view your profile and reach out directly — cutting out the noise of traditional hiring.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="about-inner">
+            <div class="reveal">
+                <span class="section-tag">About Munus</span>
+                <h2 class="section-title">We built this because job hunting was broken</h2>
+            </div>
+            <div class="about-body">
+                <p class="reveal">
+                    <strong>Munus is built to simplify the way you discover opportunities and shape your career.</strong> Whether you're a fresher stepping into the professional world or an experienced individual seeking your next big move, Munus connects you with jobs that truly match your skills, interests, and ambitions.
+                </p>
+                <p class="reveal">
+                    Instead of endlessly scrolling through irrelevant listings, our smart system helps you find roles tailored to your profile — saving time and reducing the stress of job hunting. With a clean interface and intuitive design, Munus ensures that your focus stays where it matters most: <strong>building your future.</strong>
+                </p>
+                <p class="reveal">
+                    What sets Munus apart is the <strong>direct bridge it creates between candidates and recruiters.</strong> No more waiting in uncertainty — interact with HR professionals, get real-time updates, and stay informed throughout your application journey. From understanding job requirements to preparing for interviews, Munus supports you at every step.
+                </p>
+                <p class="reveal">
+                    Applying for jobs should be easy, and with Munus, it truly is. With a single click, you can apply to multiple opportunities, track your applications, and manage your career growth all in one place. <strong>We believe that everyone deserves access to the right opportunities</strong> — and Munus is designed to make that happen, efficiently and transparently.
+                </p>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="cta-banner reveal" id="contact">
+        <h2>Ready to find your fit?</h2>
+        <p>Join thousands of professionals who found their next role on Munus.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/register" class="btn-hero-primary">Create free account</a>
+            <a href="/login" class="btn-hero-ghost">Sign in</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <a href="/" class="nav-logo" style="font-size: 1.1rem; display: inline-block; margin-bottom: 0.4rem;">Munus</a>
+            <p>© 2025 Munus. Opportunities That Actually Fit.</p>
+        </div>
+        <div class="footer-social">
+            <!-- LinkedIn -->
+           <a href="https://www.linkedin.com/in/shivam-ray-33b61126a/" target="_blank" class="social-link" title="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+               </a>
+          <a href="mailto:hackerspidy40@gmaail.com" class="social-link" title="Email">
+          <i class="fas fa-envelope"></i>
+               </a>
+          <a href="https://instagram.com" target="_blank" class="social-link" title="Instagram">
+        <i class="fab fa-instagram"></i>
+               </a>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    // Background slideshow
+    const slides = document.querySelectorAll('.bg-slide');
+    let current = 0;
+    setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+    }, 5000);
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
-
