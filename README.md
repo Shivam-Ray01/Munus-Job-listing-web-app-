@@ -2,7 +2,7 @@
 
 A full-stack job portal that connects job seekers with recruiters through a clean, role-based platform. Built from scratch using Node.js, Express, MongoDB, and EJS.
 
-📁 **GitHub:** github.com/Shivam-Ray01/Munus-Job-listing-web-app-
+📁 **GitHub:** [github.com/Shivam-Ray01/Munus-Job-listing-web-app-]
 
 ---
 
