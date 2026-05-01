@@ -8,7 +8,7 @@ A full-stack job portal that connects job seekers with recruiters through a clea
 
 ## What is Munus?
 
-Munus is a job portal where recruiters post opportunities, job seekers apply with their resume, and an admin manages the platform. It handles real-world concerns like secure file access, email verification, and role-based permissions — not just a tutorial CRUD app.
+Munus is a job portal where recruiters post opportunities, job seekers apply with their resume, and an admin manages the platform. It handles real-world concerns like secure file access, email verification, and role-based permissions not just a tutorial CRUD app.
 
 ---
 
@@ -24,12 +24,12 @@ Munus is a job portal where recruiters post opportunities, job seekers apply wit
 - Post, edit, and delete job listings
 - View all applications received for each job
 - Accept or reject applicants
-- Resume access restricted — only the recruiter who owns the job can view applicant resumes
+- Resume access restricted only the recruiter who owns the job can view applicant resumes
 
 ### For Admins
 - View all users, job posts, and applications platform-wide
 - Delete any user or job post
-- Live stats — total users, posts, and applications at a glance
+- Live stats total users, posts, and applications at a glance
 
 ---
 
@@ -95,7 +95,7 @@ Admin      → Manage everything
 - JWT tokens expire after **1 day**
 - Email verified via **OTP before account creation**
 - OTP auto-expires after **5 minutes** using MongoDB TTL index
-- Resume files stored **outside the public folder** — served only through authenticated, ownership-verified routes
+- Resume files stored **outside the public folder** served only through authenticated, ownership-verified routes
 - Admin self-assignment blocked at registration level
 
 ---
