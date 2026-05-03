@@ -4,128 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Munus — Admin Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/style/munus.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-10">
+<body>
 
-   <!-- Header -->
-    <div class="flex justify-between items-center mb-10">
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <span class="badge badge-red" style="margin-right: 0.5rem;"><i class="fas fa-shield-alt" style="margin-right: 4px;"></i> Admin</span>
+            <a href="/logout" class="nav-btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <main class="main-wide">
+        <div class="page-header">
+            <div class="page-tag">Control Panel</div>
+            <h1 class="page-title">Admin <span>Dashboard</span></h1>
+            <p class="page-sub">Platform-wide visibility and controls</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid-3" style="margin-bottom: 2rem;">
+            <div class="stat-card">
+                <div class="stat-num"><%= allUsers.length %></div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num"><%= allPosts.length %></div>
+                <div class="stat-label">Job Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num"><%= allApplications.length %></div>
+                <div class="stat-label">Applications</div>
+            </div>
+        </div>
+
+        <!-- Users -->
+        <div style="margin-bottom: 2rem;">
+            <div class="section-title"><i class="fas fa-users" style="margin-right: 8px; color: var(--blue-light);"></i> All Users</div>
+            <% if (allUsers.length === 0) { %>
+                <div class="empty-state"><p>No users found.</p></div>
+            <% } else { %>
+                <div class="grid-1">
+                    <% allUsers.forEach(u => { %>
+                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-family: Syne, sans-serif; font-weight: 700; font-size: 0.9rem; flex-shrink: 0;">
+                                    <%= u.username.charAt(0).toUpperCase() %>
+                                </div>
+                                <div>
+                                    <p style="font-weight: 600; font-size: 0.9rem;"><%= u.username %></p>
+                                    <p style="font-size: 0.78rem; color: var(--text-muted);"><%= u.email %></p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span class="badge <%= u.role === 'recruiter' ? 'badge-purple' : u.role === 'admin' ? 'badge-red' : 'badge-blue' %>">
+                                    <%= u.role %>
+                                </span>
+                                <form action="/admin/delete-user/<%= u._id %>" method="post">
+                                    <button type="submit" class="nav-btn btn-danger" style="font-size: 0.78rem; padding: 0.3rem 0.75rem;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Job Posts -->
+        <div style="margin-bottom: 2rem;">
+            <div class="section-title"><i class="fas fa-briefcase" style="margin-right: 8px; color: var(--purple-mid);"></i> All Job Posts</div>
+            <% if (allPosts.length === 0) { %>
+                <div class="empty-state"><p>No job posts found.</p></div>
+            <% } else { %>
+                <div class="grid-1">
+                    <% allPosts.forEach(p => { %>
+                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                            <div style="flex: 1;">
+                                <p style="font-family: Syne, sans-serif; font-weight: 700; font-size: 0.95rem;"><%= p.jobtitle %></p>
+                                <p style="font-size: 0.78rem; color: var(--text-muted);"><%= p.companyname %></p>
+                                <div class="meta-row" style="margin-top: 0.4rem;">
+                                    <div class="meta-item"><i class="fas fa-map-marker-alt"></i> <%= p.location %></div>
+                                    <div class="meta-item"><i class="fas fa-rupee-sign"></i> <%= p.salary.min.toLocaleString() %> – <%= p.salary.max.toLocaleString() %></div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0;">
+                                <span class="badge <%= p.mode === 'Remote' ? 'badge-green' : p.mode === 'Hybrid' ? 'badge-purple' : 'badge-blue' %>">
+                                    <%= p.mode %>
+                                </span>
+                                <form action="/admin/delete-post/<%= p._id %>" method="post">
+                                    <button type="submit" class="nav-btn btn-danger" style="font-size: 0.78rem; padding: 0.3rem 0.75rem;">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Applications -->
         <div>
-            <h1 class="text-3xl font-bold">Admin Panel</h1>
-            <p class="text-gray-400 text-sm mt-1">Full control over Munus platform</p>
-        </div>
-        <a href="/logout"
-           class="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500/40 transition duration-200">
-            Logout
-        </a>
-    </div>
-
-    <!-- status starts here  -->
-    <div class="grid grid-cols-3 gap-4 mb-10">
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
-            <p class="text-3xl font-bold text-blue-400"><%= allUsers.length %></p>
-            <p class="text-gray-400 text-sm mt-1">Total Users</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
-            <p class="text-3xl font-bold text-purple-400"><%= allPosts.length %></p>
-            <p class="text-gray-400 text-sm mt-1">Total Job Posts</p>
-        </div>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 text-center">
-            <p class="text-3xl font-bold text-green-400"><%= allApplications.length %></p>
-            <p class="text-gray-400 text-sm mt-1">Total Applications</p>
-        </div>
-    </div>
-
-    <!-- user section starts here  -->
-    <div class="mb-10">
-        <h2 class="text-xl font-semibold mb-4 text-blue-400">All Users</h2>
-        <% if (allUsers.length === 0) { %>
-            <p class="text-gray-400">No users found.</p>
-        <% } else { %>
-            <div class="grid grid-cols-1 gap-3">
-                <% allUsers.forEach(u => { %>
-                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-semibold"><%= u.username %></p>
-                            <p class="text-gray-400 text-sm"><%= u.email %></p>
-                            <span class="text-xs px-2 py-0.5 rounded-full mt-1 inline-block
-                                <%= u.role === 'recruiter' ? 'bg-purple-500/20 text-purple-400' :
-                                    u.role === 'admin' ? 'bg-red-500/20 text-red-400' :
-                                    'bg-blue-500/20 text-blue-400' %>">
-                                <%= u.role %>
-                            </span>
-                        </div>
-                        <form action="/admin/delete-user/<%= u._id %>" method="post">
-                            <button type="submit"
-                                class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40 transition duration-200">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                <% }) %>
-            </div>
-        <% } %>
-    </div>
-
-    <!-- post section starts here  -->
-    <div class="mb-10">
-        <h2 class="text-xl font-semibold mb-4 text-purple-400">All Job Posts</h2>
-        <% if (allPosts.length === 0) { %>
-            <p class="text-gray-400">No job posts found.</p>
-        <% } else { %>
-            <div class="grid grid-cols-1 gap-3">
-                <% allPosts.forEach(p => { %>
-                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-semibold"><%= p.jobtitle %></p>
-                            <p class="text-gray-400 text-sm"><%= p.companyname %></p>
-                            <div class="flex gap-3 mt-1 text-xs text-gray-500">
-                                <span><%= p.mode %></span>
-                                <span>📍 <%= p.location %></span>
-                                <span>💰 ₹<%= p.salary.min %> - ₹<%= p.salary.max %></span>
-                            </div>
-                        </div>
-                        <form action="/admin/delete-post/<%= p._id %>" method="post">
-                            <button type="submit"
-                                class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40 transition duration-200">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                <% }) %>
-            </div>
-        <% } %>
-    </div>
-
-    <!--  Applications section  -->
-    <div class="mb-10">
-        <h2 class="text-xl font-semibold mb-4 text-green-400">All Applications</h2>
-        <% if (allApplications.length === 0) { %>
-            <p class="text-gray-400">No applications found.</p>
-        <% } else { %>
-            <div class="grid grid-cols-1 gap-3">
-                <% allApplications.forEach(app => { %>
-                    <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
-                        <div class="flex justify-between items-start">
+            <div class="section-title"><i class="fas fa-file-alt" style="margin-right: 8px; color: var(--green-light);"></i> All Applications</div>
+            <% if (allApplications.length === 0) { %>
+                <div class="empty-state"><p>No applications found.</p></div>
+            <% } else { %>
+                <div class="grid-1">
+                    <% allApplications.forEach(app => { %>
+                        <div class="card" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
                             <div>
-                                <p class="font-semibold"><%= app.name %></p>
-                                <p class="text-gray-400 text-sm"><%= app.email %></p>
-                                <p class="text-gray-500 text-xs mt-1">
-                                    Available immediately: <%= app.availability %>
-                                </p>
+                                <p style="font-weight: 600; font-size: 0.9rem;"><%= app.name %></p>
+                                <p style="font-size: 0.78rem; color: var(--text-muted);"><%= app.email %></p>
+                                <div class="meta-row" style="margin-top: 0.4rem;">
+                                    <div class="meta-item"><i class="fas fa-clock"></i> Available: <%= app.availability %></div>
+                                </div>
                             </div>
-                            <span class="text-xs px-2 py-1 rounded-full
-                                <%= app.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                                    app.status === 'accepted' ? 'bg-green-500/20 text-green-400' :
-                                    'bg-red-500/20 text-red-400' %>">
+                            <span class="badge <%= app.status === 'accepted' ? 'badge-green' : app.status === 'rejected' ? 'badge-red' : 'badge-yellow' %>">
                                 <%= app.status %>
                             </span>
                         </div>
-                    </div>
-                <% }) %>
-            </div>
-        <% } %>
-    </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+    </main>
 
 </body>
 </html>

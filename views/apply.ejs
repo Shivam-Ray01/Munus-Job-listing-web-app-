@@ -3,29 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Apply</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/style/munus.css">
 </head>
-<body class="p-4">
-    <h2><%= job.jobtitle %></h2>
-    <p><%= job.companyname %></p>   
-    <div >
-        <form action="/apply/<%= job._id %>" method="post" enctype="multipart/form-data">
-            <input type="text" name="name" placeholder="Name" class="px-4 py-2 rounded-lg bg-gray-700 outline-none text-gray-100 placeholder-gray-400">
-            <input type="text" name="email" placeholder="Email" class="px-4 py-2 rounded-lg bg-gray-700 outline-none text-gray-100 placeholder-gray-400">
-            <input type="file" name="resume" accept=".pdf">
-             <select name="availability" class="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 outline-none">
-              <option value="yes">Yes - Can join immediately</option>
-                <option value="no">No - Need time</option>
-            </select>
+<body>
 
-             <button type="submit"
-                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg font-semibold transition duration-200">
-                submit Application
-            </button>
-            
-        </form>
-        <a href="/jobs" class="bg-gray-700 px-4 py-2 inline-block mt-2 rounded-lg hover:bg-gray-600">Back</a>
-    </div>
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <a href="/jobs" class="nav-btn btn-ghost"><i class="fas fa-arrow-left"></i> Back to Jobs</a>
+            <a href="/logout" class="nav-btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <main style="max-width: 620px;">
+        <!-- Job preview -->
+        <div class="card" style="margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <div class="page-tag">Applying for</div>
+                    <h2 style="font-family: Syne, sans-serif; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px;">
+                        <%= job.jobtitle %>
+                    </h2>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;"><%= job.companyname %></p>
+                </div>
+                <span class="badge <%= job.mode === 'Remote' ? 'badge-green' : job.mode === 'Hybrid' ? 'badge-purple' : 'badge-blue' %>">
+                    <%= job.mode %>
+                </span>
+            </div>
+            <div class="meta-row">
+                <div class="meta-item"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
+                <div class="meta-item"><i class="fas fa-rupee-sign"></i> <%= job.salary.min.toLocaleString() %> – <%= job.salary.max.toLocaleString() %></div>
+            </div>
+        </div>
+
+        <!-- Application form -->
+        <div class="card">
+            <div style="margin-bottom: 1.25rem;">
+                <h3 style="font-family: Syne, sans-serif; font-size: 1.1rem; font-weight: 700;">Your Application</h3>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">Fill in your details below</p>
+            </div>
+
+            <form action="/apply/<%= job._id %>" method="post" enctype="multipart/form-data">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-input" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-input" placeholder="you@email.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Can you join immediately?</label>
+                    <select name="availability" class="form-select">
+                        <option value="yes">Yes — Available to join immediately</option>
+                        <option value="no">No — Need some time</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Resume (PDF only)</label>
+                    <div style="border: 0.5px dashed rgba(127,119,221,0.3); border-radius: 10px; padding: 1.5rem; text-align: center; background: rgba(127,119,221,0.03); cursor: pointer;" onclick="document.getElementById('resumeInput').click()">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 1.5rem; color: var(--purple-mid); margin-bottom: 0.5rem; display: block;"></i>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);" id="fileLabel">Click to upload your resume</p>
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">PDF format only</p>
+                        <input type="file" id="resumeInput" name="resume" accept=".pdf" required style="display: none;" onchange="document.getElementById('fileLabel').textContent = this.files[0]?.name || 'Click to upload your resume'">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane" style="margin-right: 6px;"></i> Submit Application
+                </button>
+            </form>
+        </div>
+    </main>
+
 </body>
 </html>
+

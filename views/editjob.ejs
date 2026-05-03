@@ -2,48 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Job</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munus — Edit Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/style/munus.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-10">
+<body>
 
-    <div class="w-full max-w-lg bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-2xl">
-        <h2 class="text-2xl font-bold mb-6 text-center">Edit Job</h2>
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <a href="/dashboard" class="nav-btn btn-ghost"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            <a href="/logout" class="nav-btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
 
-        <form action="/edit-job/<%= job._id %>" method="post" class="flex flex-col gap-3">
+    <main style="max-width: 640px;">
+        <div class="page-header">
+            <div class="page-tag">Recruiter</div>
+            <h1 class="page-title">Edit <span>Job Post</span></h1>
+            <p class="page-sub">Update the details for this listing</p>
+        </div>
 
-            <input type="text" name="jobtitle" value="<%= job.jobtitle %>" required
-                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+        <div class="card">
+            <form action="/editjob/<%= job._id %>" method="post">
 
-            <input type="text" name="companyname" value="<%= job.companyname %>" required
-                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" name="jobtitle" class="form-input" value="<%= job.jobtitle %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" name="companyname" class="form-input" value="<%= job.companyname %>" required>
+                    </div>
+                </div>
 
-            <select name="mode" class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
-                <option value="Onsite" <%= job.mode === 'Onsite' ? 'selected' : '' %>>Onsite</option>
-                <option value="Hybrid" <%= job.mode === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
-                <option value="Remote" <%= job.mode === 'Remote' ? 'selected' : '' %>>Remote</option>
-            </select>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Work Mode</label>
+                        <select name="mode" class="form-select">
+                            <option value="Onsite" <%= job.mode === 'Onsite' ? 'selected' : '' %>>Onsite</option>
+                            <option value="Hybrid" <%= job.mode === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+                            <option value="Remote" <%= job.mode === 'Remote' ? 'selected' : '' %>>Remote</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-input" value="<%= job.location %>" required>
+                    </div>
+                </div>
 
-            <input type="text" name="location" value="<%= job.location %>" required
-                class="px-4 py-2 rounded-lg bg-gray-700 outline-none">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Min Salary (₹/yr)</label>
+                        <input type="number" name="salary_min" class="form-input" value="<%= job.salary.min %>" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Salary (₹/yr)</label>
+                        <input type="number" name="salary_max" class="form-input" value="<%= job.salary.max %>" required>
+                    </div>
+                </div>
 
-            <div class="flex gap-3">
-                <input type="number" name="salary_min" value="<%= job.salary.min %>" required
-                    class="w-1/2 px-4 py-2 rounded-lg bg-gray-700 outline-none">
-                <input type="number" name="salary_max" value="<%= job.salary.max %>" required
-                    class="w-1/2 px-4 py-2 rounded-lg bg-gray-700 outline-none">
-            </div>
+                <div class="form-group">
+                    <label class="form-label">Job Description</label>
+                    <textarea name="description" class="form-textarea" required><%= job.description %></textarea>
+                </div>
 
-            <textarea name="description" rows="4" required
-                class="px-4 py-2 rounded-lg bg-gray-700 outline-none resize-none"><%= job.description %></textarea>
-
-            <button type="submit"
-                class="w-full py-2 bg-yellow-500 hover:bg-yellow-600 rounded-lg font-semibold transition duration-200">
-                Update Job
-            </button>
-
-        </form>
-    </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save" style="margin-right: 6px;"></i> Save Changes
+                </button>
+            </form>
+        </div>
+    </main>
 
 </body>
 </html>

@@ -3,67 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Applications</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Applications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/style/munus.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-10">
+<body>
 
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold"><%= job.jobtitle %></h1>
-        <p class="text-gray-400"><%= job.companyname %></p>
-    </div>
-
-    <% if (forms.length === 0) { %>
-        <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400 border border-gray-700">
-            <p>No applications yet for this job.</p>
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <a href="/dashboard" class="nav-btn btn-ghost"><i class="fas fa-arrow-left"></i> Dashboard</a>
+            <a href="/logout" class="nav-btn btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
-    <% } else { %>
-        <div class="grid grid-cols-1 gap-4">
-            <% forms.forEach(form => { %>
-                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                    
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-bold">Name - <%= form.name %></h3>
-                            <p class="text-gray-400">E-mail - <%= form.email %></p>
+    </nav>
+
+    <main>
+        <!-- Job info header -->
+        <div class="card" style="margin-bottom: 1.5rem;">
+            <div class="page-tag">Applications for</div>
+            <h1 style="font-family: Syne, sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px;">
+                <%= job.jobtitle %>
+            </h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;"><%= job.companyname %></p>
+            <div class="meta-row">
+                <div class="meta-item"><i class="fas fa-users"></i> <%= forms.length %> application<%= forms.length !== 1 ? 's' : '' %> received</div>
+            </div>
+        </div>
+
+        <% if (forms.length === 0) { %>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+                <p>No applications received yet for this job.</p>
+            </div>
+        <% } else { %>
+            <div class="grid-1">
+                <% forms.forEach(form => { %>
+                    <div class="card card-accent">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-family: Syne, sans-serif; font-weight: 700; font-size: 1rem; flex-shrink: 0;">
+                                    <%= form.name.charAt(0).toUpperCase() %>
+                                </div>
+                                <div>
+                                    <p style="font-family: Syne, sans-serif; font-weight: 700; font-size: 1rem;">Name - <%= form.name %></p>
+                                    <p style="font-size: 0.82rem; color: var(--text-muted);">E-mail - <%= form.email %></p>
+                                </div>
+                            </div>
+                            <span class="badge <%= form.status === 'accepted' ? 'badge-green' : form.status === 'rejected' ? 'badge-red' : 'badge-yellow' %>">
+                                <%= form.status %>
+                            </span>
                         </div>
-                    <span class="px-3 py-1 rounded-full text-sm
-                           <%= form.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' : 
-                              form.status === 'accepted' ? 'bg-green-500/20 text-green-400' : 
-                             'bg-red-500/20 text-red-400' %>">
-                           <%= form.status %>
-                    </span>
-                </div>
 
-                    <div class="mt-3 text-sm text-gray-400">
-                        <p>Available to join immediately: <%= form.availability %></p>
+                        <div class="meta-row">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                Available immediately: <%= form.availability %>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                Applied <%= new Date(form.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                            </div>
+                        </div>
+
+                        <div class="action-row">
+                            <a href="/resume/<%= form.resume %>" class="nav-btn btn-ghost" target="_blank">
+                                <i class="fas fa-file-pdf"></i> View Resume
+                            </a>
+
+                            <form action="/application/accept/<%= form._id %>" method="post" style="display:inline;">
+                                <button type="submit" class="nav-btn btn-success">
+                                    <i class="fas fa-check"></i> Accept
+                                </button>
+                            </form>
+
+                            <form action="/application/reject/<%= form._id %>" method="post" style="display:inline;">
+                                <button type="submit" class="nav-btn btn-danger">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                        </div>
                     </div>
-
-                    <div class="mt-4 flex gap-3">
-                        <a href="/resume/<%= form.resume %>"
-                           class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-lg text-sm hover:bg-blue-500/40">
-                            View Resume
-                        </a>
-
-                        <form action="/application/accept/<%= form._id %>" method="post">
-                            <button type="submit"
-                                class="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm hover:bg-green-500/40">
-                                Accept
-                            </button>
-                        </form>
-
-                        <form action="/application/reject/<%= form._id %>" method="post">
-                            <button type="submit"
-                                class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40">
-                                Reject
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            <% }) %>
-        </div>
-    <% } %>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
 
 </body>
 </html>

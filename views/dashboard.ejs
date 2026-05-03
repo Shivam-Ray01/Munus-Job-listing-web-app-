@@ -3,83 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recruiter Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Recruiter Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/style/munus.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-10">
+<body>
 
-    <!-- Navbar -->
-    <div class="flex justify-between items-center mb-10">
-        <h1 class="text-3xl font-bold">Recruiter Dashboard</h1>
-        <div class="flex gap-4">
-            <a href="/postjobs" 
-               class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">
-                + Post a Job
+    <nav>
+        <a href="/" class="nav-logo">Munus</a>
+        <div class="nav-right">
+            <a href="/postjobs" class="nav-btn btn-grad">
+                <i class="fas fa-plus"></i> Post a Job
             </a>
-            <a href="/profile"
-               class="bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-200">
-                My Profile
+            <a href="/profile" class="nav-btn btn-ghost">
+                <i class="fas fa-user"></i> Profile
             </a>
-        </div>
-    </div>
-
-    <!-- Jobs Section -->
-    <h2 class="text-xl font-semibold mb-4">Your Posted Jobs</h2>
-
-    <% if (jobs.length === 0) { %>
-        <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400 border border-gray-700">
-            <p>You haven't posted any jobs yet.</p>
-            <a href="/postjobs" class="text-blue-400 mt-2 inline-block hover:underline">
-                Post your first job →
+            <a href="/logout" class="nav-btn btn-danger">
+                <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </div>
-    <% } else { %>
-        <div class="grid grid-cols-1 gap-4">
-            <% jobs.forEach(job => { %>
-                <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-200">
-                    
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-xl font-bold"><%= job.jobtitle %></h3>
-                            <p class="text-gray-400"><%= job.companyname %></p>
+    </nav>
+
+    <main>
+        <div class="page-header">
+            <div class="page-tag">Recruiter</div>
+            <h1 class="page-title">Your <span>Dashboard</span></h1>
+            <p class="page-sub">Manage your job listings and review applications</p>
+        </div>
+
+        <% if (jobs.length === 0) { %>
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-briefcase"></i></div>
+                <p>You haven't posted any jobs yet.</p>
+                <a href="/postjobs" style="display:inline-block; margin-top: 0.75rem;">Post your first job →</a>
+            </div>
+        <% } else { %>
+            <div class="grid-1">
+                <% jobs.forEach(job => { %>
+                    <div class="card card-accent">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+                            <div>
+                                <h3 style="font-family: Syne, sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 0.2rem;">
+                                    <%= job.jobtitle %>
+                                </h3>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);"><%= job.companyname %></p>
+                            </div>
+                            <span class="badge <%= job.mode === 'Remote' ? 'badge-green' : job.mode === 'Hybrid' ? 'badge-purple' : 'badge-blue' %>">
+                                <%= job.mode %>
+                            </span>
                         </div>
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm">
-                            <%= job.mode %>
-                        </span>
-                    </div>
 
-                    <div class="mt-3 flex gap-4 text-sm text-gray-400">
-                        <p>📍 <%= job.location %></p>
-                        <p>💰 ₹<%= job.salary.min %> - ₹<%= job.salary.max %></p>
-                    </div>
+                        <div class="meta-row">
+                            <div class="meta-item"><i class="fas fa-map-marker-alt"></i> <%= job.location %></div>
+                            <div class="meta-item"><i class="fas fa-rupee-sign"></i> <%= job.salary.min.toLocaleString() %> – <%= job.salary.max.toLocaleString() %></div>
+                            <div class="meta-item"><i class="fas fa-clock"></i> Posted <%= new Date(job.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
+                        </div>
 
-                    <p class="mt-3 text-gray-300 text-sm"><%= job.description %></p>
+                        <p style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                            <%= job.description %>
+                        </p>
 
-                    <div class="mt-4 flex gap-3">
-                       <form action="/delete" method="post">
-                           <input type="hidden" name="postid" value="<%= job._id %>">
-                             <button type="submit"
-                               class="bg-red-500/20 text-red-400 px-3 py-1 rounded-lg text-sm hover:bg-red-500/40">
-                                   Delete
-                             </button>
-                        </form>
-
-                        <form action="/editjob/<%= job._id %>" method="get">
-                           <button type="submit"
-                               class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-lg text-sm hover:bg-yellow-500/40">
-                                  Edit
-                            </button>
-                        </form>
-                        
-                            <a href="/application/<%= job._id %>"
-                                 class="bg-green-500/20 text-green-400 px-3 py-1 rounded-lg text-sm hover:bg-green-500/40">
-                                  View Applications
+                        <div class="action-row">
+                            <a href="/application/<%= job._id %>" class="nav-btn btn-success">
+                                <i class="fas fa-users"></i> View Applications
                             </a>
+                            <form action="/editjob/<%= job._id %>" method="get" style="display:inline;">
+                                <button type="submit" class="nav-btn btn-warn">
+                                    <i class="fas fa-pen"></i> Edit
+                                </button>
+                            </form>
+                            <form action="/delete" method="post" style="display:inline;">
+                                <input type="hidden" name="postid" value="<%= job._id %>">
+                                <button type="submit" class="nav-btn btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            <% }) %>
-        </div>
-    <% } %>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
 
 </body>
 </html>

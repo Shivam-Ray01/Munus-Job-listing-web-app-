@@ -3,22 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP</title>
-   <script src="https://cdn.tailwindcss.com"></script>
+    <title>Munus — Verify Email</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+     <link rel="stylesheet" href="/style/otpverificpage.css">   
 </head>
 <body>
-    <div>
-        <p>OTP sent to: <%= email %></p>
+
+    <div class="glow-top"></div>
+    <a href="/" class="logo">Munus</a>
+
+    <div class="card">
+        <div class="email-icon">✉️</div>
+        <div class="form-tag">Verification</div>
+        <h1 class="form-title">Check your email</h1>
+        <p class="form-sub">
+            We sent a 6-digit OTP to<br>
+            <span class="email-highlight"><%= email %></span><br>
+            Enter it below to verify your account.
+        </p>
+
         <form action="/verifyotp" method="post">
-            
-            <!-- hidden email field -->
             <input type="hidden" name="email" value="<%= email %>">
-            
-            <!-- OTP input -->
-            <input type="text" name="code" placeholder="Enter OTP" required>
-            
-            <button type="submit">Verify OTP</button>
+            <input
+                type="text"
+                name="code"
+                class="otp-input"
+                placeholder="000000"
+                maxlength="6"
+                autocomplete="one-time-code"
+                required
+            >
+            <button type="submit" class="submit-btn">Verify & Continue →</button>
         </form>
+
+        <p class="timer">OTP expires in <span id="countdown">05:00</span></p>
+
+        <a href="/register" class="back-link">
+            <i class="fas fa-arrow-left" style="font-size: 10px;"></i> Back to register
+        </a>
     </div>
+
+    <script>
+        // Countdown timer
+        let seconds = 300;
+        const el = document.getElementById('countdown');
+        const interval = setInterval(() => {
+            seconds--;
+            const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+            const s = String(seconds % 60).padStart(2, '0');
+            el.textContent = `${m}:${s}`;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                el.textContent = 'Expired';
+                el.style.color = '#f09595';
+            }
+        }, 1000);
+
+        // Auto format OTP input — numbers only
+        document.querySelector('.otp-input').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+
 </body>
 </html>
