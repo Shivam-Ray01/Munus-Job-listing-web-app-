@@ -140,9 +140,9 @@ app.post('/register', async (req, res)=>{
                code: otpCode
          });
          await transporter.sendMail({
-         from: process.env.EMAIL,
+         from: process.env.Email,
          to: email,
-         subject: 'Your OTP for Job Portal',
+         subject: 'Your OTP for Munus',
          text: `Your OTP is: ${otpCode}. Valid for 5 minutes.`
      });
            res.redirect('/verifyotp?email=' + email);
