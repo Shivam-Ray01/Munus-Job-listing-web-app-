@@ -1,2 +1,2 @@
-*.css linguist-vendored = true
-*.ejs linguist-vendored = true
+*.css linguist-vendored=true
+*.ejs linguist-vendored=true
