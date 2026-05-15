@@ -1,13 +1,16 @@
-const nodemailer = require('nodemailer');
+const { BrevoClient } = require('@getbrevo/brevo');
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.BREVO_USER,
-        pass: process.env.BREVO_PASS
-    }
+const client = new BrevoClient({
+    apiKey: process.env.BREVO_API_KEY
 });
 
-module.exports = transporter;
+const sendOTP = async (toEmail, otpCode) => {
+    await client.transactionalEmails.sendTransacEmail({
+        sender: { name: 'Munus', email: 'munuscareer@gmail.com' },
+        to: [{ email: toEmail }],
+        subject: 'Your OTP for Munus',
+        textContent: `Your OTP is: ${otpCode}. Valid for 5 minutes.`
+    });
+};
+
+module.exports = sendOTP;

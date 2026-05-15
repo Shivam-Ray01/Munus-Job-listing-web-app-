@@ -12,7 +12,7 @@ const path = require('path');
 const cookieparser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const upload = require('./config/multer');
-const transporter = require('./config/nodemailer');
+const sendOTP = require('./config/nodemailer');
 const otpModel = require('./models/OTP');
 
 app.set('view engine','ejs');
@@ -120,7 +120,7 @@ app.get('/admin', isLoggedIn, isAdmin, async (req, res) => {
 app.post('/register', async (req, res)=>{
     let {username, name ,email, password, role} = req.body;
      if (role ==='admin'){
-            return res.status(400).send("Don't be smart you cannot self asssign for admin role");
+            return res.status(400).send("You cannot self asssign for admin role");
        }
     let user = await users.findOne({email});
     if (user) return res.status(200).send('user already exists, go to login page');
@@ -139,12 +139,7 @@ app.post('/register', async (req, res)=>{
                role,
                code: otpCode
          });
-         await transporter.sendMail({
-         from: process.env.Email,
-         to: email,
-         subject: 'Your OTP for Munus',
-         text: `Your OTP is: ${otpCode}. Valid for 5 minutes.`
-     });
+        await sendOTP(email, otpCode);
            res.redirect('/verifyotp?email=' + email);
    });
 });
