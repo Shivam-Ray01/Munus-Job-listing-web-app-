@@ -372,3 +372,16 @@ main {
     margin-bottom: 1rem;
     color: var(--text-soft);
 }
+
+.job-desc {
+    overflow: hidden;
+    max-height: 4.5em;
+    line-height: 1.5em;
+    transition: max-height 0.3s ease;
+    font-size: 0.875rem;
+    color: var(--text-soft);
+}
+
+.job-desc.expanded {
+    max-height: 1000px;
+}

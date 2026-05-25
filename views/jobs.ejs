@@ -64,7 +64,16 @@
                             </div>
                         </div>
 
-                        <p class="job-desc"><%= job.description %></p>
+                       <div class="job-desc-wrap">
+    <p class="job-desc" id="desc-<%= job._id %>">
+        <%= job.description %>
+    </p>
+    <button 
+        class="read-more-btn" 
+        onclick="toggleDesc('<%= job._id %>', this)">
+        Read More
+    </button>
+</div>
 
                         <div class="job-footer">
                             <span class="posted-time">
