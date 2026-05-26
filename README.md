@@ -86,6 +86,23 @@ Job Seeker → Browse Jobs → Apply (upload resume)
 Recruiter  → Post Jobs → View Applications → Accept / Reject
 Admin      → Manage everything
 ```
+---
+<img width="1911" height="966" alt="HomePage" src="https://github.com/user-attachments/assets/11174c13-805b-4a8d-9c5c-0cde59fef095" />
+<img width="1919" height="970" alt="Regitration page" src="https://github.com/user-attachments/assets/96d218af-b112-4357-a952-1259c93aef55" />
+<img width="1919" height="969" alt="Recruiter&#39;s dasdhboard" src="https://github.com/user-attachments/assets/435818ae-2662-4f27-bdb1-b0e6fb68110b" />
+<img width="1919" height="964" alt="User&#39;s Dashboard" src="https://github.com/user-attachments/assets/d12c1356-21c9-49c1-ada7-d3dc5087c160" />
+<img width="1919" height="967" alt="Admin dashboard" src="https://github.com/user-attachments/assets/580c84d4-c2e2-43fe-8d4f-0228ea403278" />
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 
