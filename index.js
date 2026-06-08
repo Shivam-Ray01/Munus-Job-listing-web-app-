@@ -14,6 +14,7 @@ const jwt = require('jsonwebtoken');
 const upload = require('./config/multer');
 const sendOTP = require('./config/nodemailer');
 const otpModel = require('./models/OTP');
+const fs = require ('fs');
 
 if (!fs.existsSync('./uploads')) {
     fs.mkdirSync('./uploads', { recursive: true });
