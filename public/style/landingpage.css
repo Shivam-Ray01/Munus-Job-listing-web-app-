@@ -512,3 +512,123 @@
             transform: translateY(0);
         }
    
+/* ==========================================================================
+   ── RESPONSIVE DESIGN (MEDIA QUERIES) ──
+   ========================================================================== */
+
+/* 📱 TABLETS & SMALL DESKTOPS (Max-width: 991px) */
+@media (max-width: 991px) {
+    .hero h1 {
+        max-width: 100%;
+    }
+    .hero-stats {
+        gap: 2rem;
+    }
+}
+
+/* 📱 TABLETS & LANDSCAPE PHONES (Max-width: 768px) */
+@media (max-width: 768px) {
+    nav {
+        height: auto;
+        padding: 1rem 5%;
+        flex-wrap: wrap; 
+        gap: 1rem;
+    }
+    
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        gap: 1rem;
+        flex-wrap: wrap; /* FIX: Stops links from bursting the width */
+    }
+
+    .hero {
+        padding-top: 140px; 
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-hero-primary, .btn-hero-ghost {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+    }
+
+    .hero-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    section {
+        padding: 4rem 5%;
+    }
+
+    .cta-banner {
+        padding: 3rem 1.5rem;
+        margin: 0 5% 3rem;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+}
+
+/* 📱 SMARTPHONES (Max-width: 480px) */
+@media (max-width: 480px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 5% 0.5rem;
+    }
+
+    .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .nav-actions a, .nav-actions button {
+        flex: 1;
+        justify-content: center;
+        display: flex;
+    }
+
+    /* FIX: Shrinks the massive font and breaks long words */
+    .hero h1 {
+        font-size: 2.1rem; /* Drops it down from the 2.8rem desktop minimum */
+        line-height: 1.15;
+        word-wrap: break-word; /* Forces 'Opportunities' to stay inside the screen */
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .steps-grid, .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .step-card, .feature-card {
+        padding: 1.5rem;
+    }
+
+    .cta-banner {
+        padding: 2.5rem 1.2rem; /* Shrinks the banner padding so it doesn't push outward */
+    }
+
+    .cta-banner h2 {
+        font-size: 1.6rem;
+    }
+}
