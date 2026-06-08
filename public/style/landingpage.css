@@ -516,7 +516,7 @@
    ── RESPONSIVE DESIGN (MEDIA QUERIES) ──
    ========================================================================== */
 
-/* 📱 TABLETS & SMALL DESKTOPS (Max-width: 991px) */
+/*  TABLETS & SMALL DESKTOPS (Max-width: 991px) */
 @media (max-width: 991px) {
     .hero h1 {
         max-width: 100%;
@@ -584,7 +584,7 @@
     }
 }
 
-/* 📱 SMARTPHONES (Max-width: 480px) */
+/*  SMARTPHONES (Max-width: 480px) */
 @media (max-width: 480px) {
     nav {
         flex-direction: column;
