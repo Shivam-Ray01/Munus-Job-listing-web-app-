@@ -7,6 +7,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
      <link rel="stylesheet" href="/style/jobspage.css">
+
+     <style>
+        .job-desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limits the text to35 lines initially */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Removes the line restriction when expanded */
+        .job-desc.expanded {
+            -webkit-line-clamp: unset;
+            display: block;
+        }
+
+        /* Styling for the Read More button */
+        .read-more-btn {
+            background: none;
+            border: none;
+            color: #007bff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .read-more-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
@@ -89,6 +127,22 @@
             </div>
         <% } %>
     </main>
+
+    <script>
+        function toggleDesc(jobId, button) {
+            const descElement = document.getElementById('desc-' + jobId);
+            
+            if (descElement) {
+                descElement.classList.toggle('expanded');
+                
+                if (descElement.classList.contains('expanded')) {
+                    button.innerHTML = 'Read Less <i class="fas fa-chevron-up" style="font-size: 10px; margin-left: 4px;"></i>';
+                } else {
+                    button.innerHTML = 'Read More <i class="fas fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>';
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
