@@ -15,6 +15,13 @@ const upload = require('./config/multer');
 const sendOTP = require('./config/nodemailer');
 const otpModel = require('./models/OTP');
 
+if (!fs.existsSync('./uploads')) {
+    fs.mkdirSync('./uploads', { recursive: true });
+}
+if (!fs.existsSync('./uploads/resumes')) {
+    fs.mkdirSync('./uploads/resumes', { recursive: true });
+}
+
 app.set('view engine','ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
