@@ -123,3 +123,4 @@ Admin      → Manage everything
 📧 shivamray71205@gmail.com  
 🔗 [LinkedIn](www.linkedin.com/in/shivam-ray-33b61126a/)  
 💻 [GitHub](github.com/Shivam-Ray01)
+Deployed link - https://munus-sa7f.onrender.com/
